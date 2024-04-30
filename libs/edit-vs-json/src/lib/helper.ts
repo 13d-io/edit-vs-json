@@ -371,7 +371,7 @@ const enclosures: TEnclosureSet[] = [
 
 export const complementEnclosure = (splitInput: TSplitInput) => {
   const lastChar = splitInput.front.slice(-1);
-  const enclosureCloser = enclosures.find(([o, c]) => c === lastChar);
+  const enclosureCloser = enclosures.find(([_o, c]) => c === lastChar);
   if (enclosureCloser && splitInput.back.slice(0, 1) === lastChar) {
     return complementCloser(enclosureCloser, splitInput);
   }

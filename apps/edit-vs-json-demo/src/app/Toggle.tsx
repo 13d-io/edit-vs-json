@@ -12,7 +12,6 @@ export const Toggle: FunctionComponent<PropsWithChildren<IToggle>> = ({
 }) => {
   return (
     <button
-      role="button"
       onClick={onClick}
       className={`toggle ${active ? 'on' : 'off' }`}
     >
