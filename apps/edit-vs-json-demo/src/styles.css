@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+.toggle {
+  font-size: 1.125rem;
+  line-height: 1.625rem;
+  font-weight: 600;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border-width: 1px;
+  border-radius: 0.25rem;
+  border-color: darkgrey;
+}
+
+.toggle.off {
+  background-color: palegreen;
+  color: darkgrey;
+}
+
+.toggle.on {
+  background-color: forestgreen;
+  color: white;
+}
+
+.toggle:active {
+  transform: translateY(0.25rem);
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.toggle:hover {
+  color: lightgrey;
+  border-color: white;
+  background-color: darkgreen;
+}
+
+.toggle:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}

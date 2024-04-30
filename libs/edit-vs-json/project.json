@@ -1,0 +1,72 @@
+{
+  "name": "edit-vs-json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/edit-vs-json/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/edit-vs-json",
+        "outputFileName": "index.js",
+        "tsConfig": "libs/edit-vs-json/tsconfig.lib.json",
+        "project": "libs/edit-vs-json/package.json",
+        "entryFile": "libs/edit-vs-json/src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime", "core-js"],
+        "rollupConfig": "@nx/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "extractCss": false,
+        "assets": [
+          {
+            "glob": "libs/edit-vs-json/README.md",
+            "input": ".",
+            "output": "."
+          },
+          {
+            "glob": "libs/edit-vs-json/AUTHORS",
+            "input": ".",
+            "output": "."
+          },
+          {
+            "glob": "libs/edit-vs-json/LICENSE",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "analyze": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/edit-vs-json",
+        "outputFileName": "index.js",
+        "tsConfig": "libs/edit-vs-json/tsconfig.lib.json",
+        "project": "libs/edit-vs-json/package.json",
+        "entryFile": "libs/edit-vs-json/src/index.ts",
+        "external": ["react", "react-dom", "react/jsx-runtime", "core-js"],
+        "rollupConfig": "rollup.js",
+        "compiler": "babel",
+        "extractCss": false,
+        "assets": [
+          {
+            "glob": "libs/edit-vs-json/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 52000,
+        "configDir": "libs/edit-vs-json/.storybook",
+        "docsMode": true,
+        "noOpen": false
+      }
+    }
+  }
+}

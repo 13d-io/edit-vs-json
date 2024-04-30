@@ -1,0 +1,158 @@
+.edit-vs-json {
+  display: block;
+  box-sizing: border-box;
+}
+
+.edit-vs-json .container {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.edit-vs-json textarea::-webkit-scrollbar {
+    background-color: rgb(0,0,0,0);
+    color: rgb(0,0,0,0);
+}
+
+.edit-vs-json textarea::-webkit-scrollbar-button {
+    background-color: rgb(0,0,0,0);
+    color: rgb(0,0,0,0);
+}
+
+.edit-vs-json textarea::-webkit-scrollbar-track {
+    background-color: rgb(0,0,0,0);
+    color: rgb(0,0,0,0);
+}
+
+.edit-vs-json textarea::-webkit-scrollbar-track-piece {
+    background-color: rgb(0,0,0,0);
+    color: rgb(0,0,0,0);
+}
+
+.edit-vs-json textarea::-webkit-scrollbar-thumb {
+    background-color: rgb(0,0,0,0);
+    color: rgb(0,0,0,0);
+}
+
+.edit-vs-json textarea::-webkit-scrollbar-corner {
+    background-color: rgb(0,0,0,0);
+    color: rgb(0,0,0,0);
+}
+
+.edit-vs-json textarea {
+    scrollbar-3dlight-color: rgb(0,0,0,0);
+    -ms-scrollbar-3dlight-color: rgb(0,0,0,0);
+    scrollbar-arrow-color: rgb(0,0,0,0);
+    -ms-scrollbar-arrow-color: rgb(0,0,0,0);
+    scrollbar-base-color: rgb(0,0,0,0);
+    -ms-scrollbar-base-color: rgb(0,0,0,0);
+    scrollbar-color: rgb(0,0,0,0) rgb(0,0,0,0);
+    scrollbar-darkshadow-color: rgb(0,0,0,0);
+    -ms-scrollbar-darkshadow-color: rgb(0,0,0,0);
+    scrollbar-face-color: rgb(0,0,0,0);
+    -ms-scrollbar-face-color: rgb(0,0,0,0);
+    scrollbar-highlight-color: rgb(0,0,0,0);
+    -ms-scrollbar-highlight-color: rgb(0,0,0,0);
+    scrollbar-shadow-color: rgb(0,0,0,0);
+    -ms-scrollbar-shadow-color: rgb(0,0,0,0);
+}
+
+.edit-vs-json .evj-editor {
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 19.6px;
+    font-weight: 400;
+}
+
+.edit-vs-json textarea.evj-edit {
+    color: rgb(0, 0, 0, 0);
+    caret-color: rgb(33, 255, 33, 1);
+    background-color: rgb(0, 0, 0, 0.1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 7;
+    font-weight: 800;
+    box-sizing: content-box;
+}
+
+.edit-vs-json textarea.evj-edit:focus {
+    outline: 2px solid deepskyblue;
+    outline-offset: 0;
+}
+
+.edit-vs-json pre.evj-view {
+    background-color: #303030;
+    color: #d0d0d0;
+    z-index: 6;
+    position: relative;
+    overflow: auto;
+    top: 2px;
+    left: 1px;
+}
+
+.edit-vs-json span.line {
+    display: block;
+    height: 19.6px;
+}
+
+.edit-vs-json span.openSymbol {
+    font-weight: 600;
+    color: #efa8ef;
+}
+
+.edit-vs-json span.pairKey {
+    color: #d0d000;
+}
+
+.edit-vs-json span.pairDelim {
+    font-weight: 700;
+}
+
+.edit-vs-json span.valueOpenSymbol {
+    font-weight: 600;
+    color: #efa8ef;
+}
+
+.edit-vs-json span.pairValue {
+    color: orange;
+}
+
+.edit-vs-json span.closeSymbol {
+    font-weight: 600;
+    color: #efa8ef;
+}
+
+.edit-vs-json span.delim {
+    font-weight: 700;
+}
+
+.edit-vs-json span.misc {
+    color: #ff6262;
+}
+
+@supports (-moz-appearance:none) {
+  .edit-vs-json pre.evj-view {
+    top: 6px;
+    left: 2px;
+  }
+}
+
+@supports (-webkit-hyphens: none) {
+  .edit-vs-json .evj-editor {
+        line-height: 19.8px;
+  }
+
+  .edit-vs-json span.line {
+        height: 19.04px;
+  }
+
+  .edit-vs-json textarea.evj-edit {
+        top: 0;
+  }
+
+  .edit-vs-json pre.evj-view {
+        margin-left: -1px;
+        margin-top: 13px;
+  }
+}
+

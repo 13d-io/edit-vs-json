@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "edit-vs-json": ["libs/edit-vs-json/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

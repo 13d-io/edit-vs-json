@@ -1,0 +1,21 @@
+{
+  "name": "edit-vs-json",
+  "version": "0.0.1",
+  "author": "Richard Vance <richiemillennium@gmail.com> (https://github.com/RichieMillennium)",
+  "license": "MIT",
+  "description": "A React JSON editor with syntax highlighting and auto-formatting",
+  "homepage": "https://13d.io/edit-vs-json",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/13d-io/edit-vs-json.git"
+  },
+  "keywords": [
+    "json",
+    "editor",
+    "react"
+  ],
+  "types": "index.esm.d.ts",
+  "peerDependencies": {
+    "react": ">= 16"
+  }
+}
