@@ -8,7 +8,7 @@ This library was generated with [Nx](https://nx.dev).
 
 ## Start the demo application
 
-Run `npm run demo` to start the development server for the demo application.
+Run `npm run demo:serve` to start the development server for the demo application.
 
 ## Running storybook
 

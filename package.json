@@ -2,11 +2,16 @@
   "name": "@edit-vs-json/source",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://13d-io.github.io/edit-vs-json/",
   "scripts": {
     "build": "nx build edit-vs-json && scripts/pre-publish.sh",
-    "demo": "nx serve edit-vs-json-demo",
+    "demo:build": "nx build edit-vs-json-demo",
+    "demo:serve": "nx serve edit-vs-json-demo",
+    "demo:predeploy": "nx build edit-vs-json-demo",
+    "demo:deploy": "gh-pages -d dist/apps/edit-vs-json-demo",
     "storybook": "nx run edit-vs-json:storybook",
-    "test": "nx test edit-vs-json"
+    "test": "nx test edit-vs-json",
+    "publish": "./scripts/publish.sh"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +61,7 @@
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
+    "gh-pages": "^6.1.1",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
     "nx": "18.2.4",

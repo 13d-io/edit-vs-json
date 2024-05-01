@@ -1,5 +1,5 @@
 import { useState } from 'react';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line
 import styles from './app.module.css';
 
 import { Editor } from 'edit-vs-json';
@@ -34,16 +34,29 @@ export function App() {
     setIsLocked(previous => !previous);
   };
 
+  const handleDocs = () => {
+    window.open('https://13d.io/edit-vs-json/index.html')
+  };
+
+  const handleGithub = () => {
+    window.open('https://github.com/13d-io/edit-vs-json');
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'stretch', alignItems: 'center' }}>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
+    <div className="page">
+      <div className="header">
+        <button className="docs" onClick={handleDocs}>Docs</button>
+        <h1>edit-vs-json</h1>
+        <button className="github" onClick={handleGithub}>GitHub</button>
+      </div>
+      <div className="bar">
         <div style={{ height: '64px', width: '1400px', padding: '2px' }}>
           <Toggle active={validationActive} onClick={handleValidationToggle}>Toggle Validation</Toggle>
           <Toggle active={keyEditActive} onClick={handleKeyEditToggle}>Toggle Key Editing</Toggle>
           <Toggle active={isLocked} onClick={handleLockToggle}>Toggle Editor Lock</Toggle>
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
+      <div className="bar">
         <Editor
           width="1400px"
           height="400px"
@@ -54,13 +67,13 @@ export function App() {
           locked={isLocked}
         />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
-        <div style={{ height: '24px', width: '1400px', visibility: validationActive ? 'visible' :  'hidden', padding: '2px', color: 'white', backgroundColor: valid ? 'green' : 'red' }}>
-          {' '}
+      <div className="bar">
+        <div className="stripe" style={{ visibility: validationActive ? 'visible' :  'hidden', color: 'white', backgroundColor: valid ? 'green' : 'red' }}>
+          Validation Status
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch' }}>
-        <div style={{ height: '24px', width: '1400px', visibility: keyEditActive ? 'visible' :  'hidden', padding: '2px' }}>
+      <div className="bar">
+        <div className="stripe" style={{ visibility: keyEditActive ? 'visible' :  'hidden' }}>
           Last key entry: {`${currentKey} `}
         </div>
       </div>
