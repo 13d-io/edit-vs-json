@@ -8,6 +8,7 @@ import React, {
   CSSProperties,
 } from 'react';
 import {
+  setCanvasFont,
   tryFormatJson,
   analyzeJsonLine,
   calculateBestPotentialValue,
@@ -64,6 +65,7 @@ export const Editor: FC<IProps> = ({
       }
     };
     if (editorEl.current) {
+      setCanvasFont(editorEl.current);
       editorEl.current.addEventListener('scroll', scrollSync);
     }
     return () => {
@@ -89,14 +91,15 @@ export const Editor: FC<IProps> = ({
     setValue(newValue || event.target.value);
     if (onKeyEntry) {
       debouncedKeyEntry(split)
-        .then(keyCheck => {
-          if (keyCheck) {
-            onKeyEntry(keyCheck, (newKey: string | null | undefined) => {
+        .then(keyEntryResponse => {
+          if (keyEntryResponse) {
+            const { key, position } = keyEntryResponse;
+            onKeyEntry(key, position, (newKey: string | null | undefined) => {
               if (newKey) {
                 const updatedValue = setKey(split, newKey);
                 setValue(updatedValue);
                 setCursorPosition(inputEl, updatedValue, [
-                  split.front.length + (newKey.length - keyCheck.length),
+                  split.front.length + (newKey.length - key.length),
                   inputEl.selectionStart
                 ]);
               }
@@ -183,7 +186,7 @@ export const Editor: FC<IProps> = ({
         {lines.map((line, index) => {
           const details = analyzeJsonLine(line);
           return details ? (
-            <span key={index} className="line" style={{marginLeft: `${details.indentSize * 9.1}px`}}>
+            <span key={index} className="line" style={{marginLeft: `${details.indentSize}px`}}>
               <span className="openSymbol">{details.openSymbol}</span>
               <span className="pairKey">{details.key}</span>
               <span className="pairDelim">{details.pairDelim}</span>
@@ -205,7 +208,11 @@ export const Editor: FC<IProps> = ({
           value={value}
           ref={el => editorEl.current = el}
           autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
         />
+        <canvas className="evj-calc-canvas" style={{ visibility: 'hidden' }} />
       </div>
     </div>
   );

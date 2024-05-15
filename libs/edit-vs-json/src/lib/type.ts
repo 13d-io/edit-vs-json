@@ -18,7 +18,7 @@ export interface IProps {
   initValue?: string;
   onChange?: (value: string, isValid: boolean) => void;
   changeDebounceInterval?: number;
-  onKeyEntry?: (key: string, callback: TKeyCallback) => void;
+  onKeyEntry?: (key: string, position: IPosition, callback: TKeyCallback) => void;
   keyEntryDebounceInterval?: number;
   locked?: boolean;
 }
@@ -37,4 +37,14 @@ export type TSplitInput = {
 
 export type TValidatorFunc = (value: string) => boolean;
 
-export type TKeyEntryFunc = (split: TSplitInput) => string | null;
+export type TKeyEntryFunc = (split: TSplitInput) => IKeyEntryResponse | null;
+
+export interface IPosition {
+  x: number;
+  y: number;
+}
+
+export interface IKeyEntryResponse {
+  key: string;
+  position: IPosition;
+}

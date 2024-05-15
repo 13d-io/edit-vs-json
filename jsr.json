@@ -1,0 +1,10 @@
+{
+  "name": "@13d/edit-vs-json",
+  "version": "0.1.0",
+  "exports": "./libs/edit-vs-json/src/index.ts",
+  "publish": {
+    "exclude": [
+      "./libs/edit-vs-json/src/lib/style.css"
+    ]
+  }
+}

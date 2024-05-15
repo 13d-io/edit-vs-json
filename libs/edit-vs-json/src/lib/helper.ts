@@ -5,6 +5,8 @@ import {
   TSplitInput,
   TValidatorFunc,
   TKeyEntryFunc,
+  IPosition,
+  IKeyEntryResponse,
 } from './type';
 
 const DEFAULT_VALIDATOR_INTERVAL = 500;
@@ -37,14 +39,14 @@ const debounce = <R extends unknown[], S>(fn: (...args: R) => S, time: number) =
 }
 
 export const debounceKeyEntry = (onKeyEntry: TKeyEntryFunc, time: number) => {
-  return debounce<[TSplitInput], string | null>(onKeyEntry, time);
+  return debounce<[TSplitInput], IKeyEntryResponse | null>(onKeyEntry, time);
 };
 
 const keyChecker = (split: TSplitInput) =>
   checkKeyEntry(split);
 
 export const debouncedKeyEntryFactory = () => {
-  let handler: (arg: TSplitInput) => Promise<string | null>;
+  let handler: (arg: TSplitInput) => Promise<IKeyEntryResponse | null>;
   const creator = (debounceInterval: number) => {
     if (!handler) {
       handler = debounceKeyEntry(keyChecker, debounceInterval);
@@ -88,20 +90,78 @@ export const tryFormatJson = (json: string, indent: number, stripTrailingCommas:
   }
 };
 
-const updateScrollTop = (inputEl: HTMLTextAreaElement, value: string) => {
-  const split = splitInputAtCursor(inputEl, value);
-  const frontLines = split.front.split('\n');
-  const selectionRow = frontLines.length > 2 ? frontLines.length - 3 : 0;
-  let lineHeightValue: number;
+let cachedFont = '400 14px monospace';
+
+export const setCanvasFont = (inputEl: HTMLTextAreaElement) => {
+  let computedStyles: StylePropertyMapReadOnly | null = null;
+  let fontFamilyValue: string;
+  let fontSizeValue: number;
+  let fontSizeUnit: string;
+  let fontWeightValue: number;
   try {
-    const computed = inputEl.computedStyleMap();
+    computedStyles = inputEl.computedStyleMap();
+    const fontFamily = computedStyles.get('font-family');
+    fontFamilyValue = fontFamily?.toString() || 'monospace';
     // @ts-expect-error this is a CSSUnitValue not a CSSStyleValue
-    const lineHeight: CSSUnitValue = computed.get('line-height');
-    lineHeightValue = lineHeight.value;
+    const fontSize: CSSUnitValue = computedStyles.get('font-size');
+    fontSizeValue = fontSize.value;
+    fontSizeUnit = fontSize.unit;
+    // @ts-expect-error this is a CSSUnitValue not a CSSStyleValue
+    const fontWeight: CSSUnitValue = computedStyles.get('font-weight');
+    fontWeightValue = fontWeight.value;
+  } catch (e) {
+    fontFamilyValue = 'monospace';
+    fontSizeValue = 14;
+    fontSizeUnit = 'px';
+    fontWeightValue = 400;
+  }
+  cachedFont = `${fontWeightValue} ${fontSizeValue}${fontSizeUnit} ${fontFamilyValue}`;
+  return computedStyles;
+};
+
+const calculateTextWidth = (text: string) => {
+  // re-use canvas object for better performance
+  const canvas: HTMLCanvasElement | null = document.querySelector('.evj-calc-canvas');
+  if (canvas) {
+    const context = canvas.getContext("2d");
+    if (context) {
+      context.font = cachedFont;
+      const metrics = context.measureText(text);
+      return metrics.width;
+    }
+  }
+  return text.length * 16;
+}
+
+const calculatePosition = (
+  split: TSplitInput, inputEl: HTMLTextAreaElement, excludeScroll: boolean, yOffset = 0
+): IPosition => {
+  const frontLines = split.front.split('\n');
+  const lineFront = frontLines[frontLines.length - 1];
+  const selectionRow = frontLines.length > (yOffset - 1) ? frontLines.length - yOffset : 0;
+  const computedStyles = setCanvasFont(inputEl);
+  let lineHeightValue = 19.6;
+  try {
+    if (computedStyles) {
+      // @ts-expect-error this is a CSSUnitValue not a CSSStyleValue
+      const lineHeight: CSSUnitValue = computedStyles.get('line-height');
+      lineHeightValue = lineHeight.value;
+    }
   } catch (e) {
     lineHeightValue = 19.6;
   }
-  inputEl.scrollTop = lineHeightValue * selectionRow;
+  const textSize = calculateTextWidth(lineFront);
+  const fullHeight = lineHeightValue * selectionRow;
+  return {
+    x: textSize,
+    y: excludeScroll ? (fullHeight - inputEl.scrollTop) : fullHeight
+  };
+};
+
+const updateScrollTop = (inputEl: HTMLTextAreaElement, value: string) => {
+  const split = splitInputAtCursor(inputEl, value);
+  const pos = calculatePosition(split, inputEl, false, 3);
+  inputEl.scrollTop = pos.y;
 };
 
 export const setCursorPosition = (inputEl: HTMLTextAreaElement, value: string, positionChoices: number[]) => {
@@ -237,13 +297,15 @@ export const analyzeJsonLine = (line: string): IMatchGroups => {
     /^[\s]*((?<gopen>[{[])?((?<gkey>"([^"]+)")(?<gpair>: ))?(?<gvalopen>[{[])?(?<gval>("([^"]+)")?([a-z0-9.-]+)?)?(?<gclose>[}\]])?(?<gdelim>,)?)$/
   );
   if (!matches) {
+    const indentSize = calculateTextWidth(line.substring(0, line.length - line.trimStart().length));
     return {
-      indentSize: line.length - line.trimStart().length,
+      indentSize,
       invalid: line.trim()
     };
   }
+  const indentSize = calculateTextWidth(matches[0].substring(0, matches[0].length - matches[1].length));
   return {
-    indentSize: matches[0].length - matches[1].length,
+    indentSize,
     openSymbol: getGroup(matches, 'gopen'),
     key: getGroup(matches, 'gkey'),
     pairDelim: getGroup(matches, 'gpair'),
@@ -318,10 +380,12 @@ const inObjectKey = (frontBalance: IBalance, backBalance: IBalance, lineFront: s
 
 };
 
+let editorElCache: HTMLTextAreaElement | null = document.querySelector('.evj-edit');
+
 const testKeyFront = /^([\s]*\s*"?)([a-z0-9_$-]+)$/;
 const testKeyBack = /^([a-z0-9_$-]+)(\s*"?:?(.*))$/;
 
-export const checkKeyEntry = (splitInput: TSplitInput) => {
+export const checkKeyEntry = (splitInput: TSplitInput): IKeyEntryResponse | null => {
   const frontBalance = reduceBalance(splitInput.front, false, false, false);
   const backBalance = reduceBalance(splitInput.back, frontBalance.inQuote, frontBalance.inBrace || !!(frontBalance.quote % 2), frontBalance.inBracket || !!(frontBalance.quote % 2));
   const lines = splitInput.front.split('\n');
@@ -331,10 +395,13 @@ export const checkKeyEntry = (splitInput: TSplitInput) => {
     const lineBack = splitInput.back.split('\n')[0];
     const keyBack = lineBack.replace(testKeyBack, '$1');
     if (testKeyFront.test(keyFront)) {
+      const inputEl: HTMLTextAreaElement | null = editorElCache || document.querySelector('.evj-edit');
+      editorElCache = inputEl;
+      const position = inputEl ?  calculatePosition(splitInput, inputEl, true) : {x:0, y:0};
       if (testKeyBack.test(keyBack)) {
-        return `${keyFront}${keyBack}`;
+        return { key: `${keyFront}${keyBack}`, position };
       } else {
-        return keyFront;
+        return { key: keyFront, position };
       }
     }
   }

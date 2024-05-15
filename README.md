@@ -80,15 +80,16 @@ the debounce interval in ms for the change event
 - smaller values result in the change event being triggered more frequently
 - larger values cause the change event to be triggered only when editing pauses
 
-### onKeyEntry: function(key: string, callback: (key?: string | null) => void)
+### onKeyEntry: function(key: string, position: { x: number, y: number }, callback: (key?: string | null) => void)
 
 the key entry event handler 
 
 - the key entry event is triggered when the Editor detects the user is editing an object key
 - can be used to provide autocomplete-like functionality for keys to the Editor
 - can be used to restrict the keys permitted in the Editor
-- receives 2 arguments:
+- receives 3 arguments:
   - the key being edited
+  - the position of the cursor relative to the Editor
   - a callback function that updates the key to the specified string
 
 ### keyEntryDebounceInterval: number = 200

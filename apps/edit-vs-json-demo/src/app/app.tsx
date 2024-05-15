@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 // eslint-disable-next-line
 import styles from './app.module.css';
 
 import { Editor } from 'edit-vs-json';
 import { Toggle } from './Toggle';
+import useFadeOut from './useFadeOut';
+
+type TPos = { x: number, y: number };
 
 export function App() {
   const [valid, setValid] = useState(true);
@@ -11,18 +14,26 @@ export function App() {
   const [isLocked, setIsLocked] = useState(false);
   const [validationActive, setValidationActive] = useState(true);
   const [keyEditActive, setKeyEditActive] = useState(true);
+  const [cursorPos, setPosition] = useState({ x: 0, y: 0 });
+  const overlayEl = useRef<HTMLElement | null>(null);
+
+  const setFadeOutDelay = useFadeOut(overlayEl.current);
+
   const handleValidate = (value: string, isValid: boolean) => {
     setValid(isValid);
   };
 
-  const handleKeyEntry = (value: string, callback: (val?: string) => void) => {
+  const handleKeyEntry = (value: string, position: TPos, callback: (val?: string) => void) => {
     setCurrentKey(value);
+    setPosition(position);
+    setFadeOutDelay(3000);
     setTimeout(() => {
       callback();
     }, 100);
   };
 
   const handleValidationToggle = () => {
+    setPosition({ x: 0, y: 0 });
     setValidationActive(previous => !previous);
   };
 
@@ -57,24 +68,35 @@ export function App() {
         </div>
       </div>
       <div className="bar">
-        <Editor
-          width="1400px"
-          height="400px"
-          onChange={validationActive ? handleValidate : undefined}
-          changeDebounceInterval={300}
-          onKeyEntry={keyEditActive ? handleKeyEntry :  undefined}
-          keyEntryDebounceInterval={100}
-          locked={isLocked}
-        />
+        <div ref={el => overlayEl.current = el} style={{
+          position: 'absolute',
+          display: cursorPos.x ? 'inline' : 'none',
+          left: `${cursorPos.x+124}px`,
+          top: `${cursorPos.y > 300 ? cursorPos.y+120 : cursorPos.y+186}px`,
+          opacity: 0.5,
+          color: 'red',
+          backgroundColor: 'lightgray',
+          border: '1px solid gray',
+          fontWeight: 'bold',
+          padding: '4px',
+          zIndex: 9999,
+          height: '24px',
+        }}>{currentKey}</div>
+        <div>
+          <Editor
+            width="1400px"
+            height="400px"
+            onChange={validationActive ? handleValidate : undefined}
+            changeDebounceInterval={300}
+            onKeyEntry={keyEditActive ? handleKeyEntry :  undefined}
+            keyEntryDebounceInterval={100}
+            locked={isLocked}
+          />
+        </div>
       </div>
       <div className="bar">
         <div className="stripe" style={{ visibility: validationActive ? 'visible' :  'hidden', color: 'white', backgroundColor: valid ? 'green' : 'red' }}>
           Validation Status
-        </div>
-      </div>
-      <div className="bar">
-        <div className="stripe" style={{ visibility: keyEditActive ? 'visible' :  'hidden' }}>
-          Last key entry: {`${currentKey} `}
         </div>
       </div>
     </div>
