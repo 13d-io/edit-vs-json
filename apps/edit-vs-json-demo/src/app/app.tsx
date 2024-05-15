@@ -71,7 +71,7 @@ export function App() {
         <div ref={el => overlayEl.current = el} style={{
           position: 'absolute',
           display: cursorPos.x ? 'inline' : 'none',
-          left: `${cursorPos.x+124}px`,
+          left: `calc(((100vw - 1400px) / 2) + ${cursorPos.x}px)`,
           top: `${cursorPos.y > 300 ? cursorPos.y+120 : cursorPos.y+186}px`,
           opacity: 0.5,
           color: 'red',
