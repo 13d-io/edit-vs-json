@@ -70,7 +70,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 7;
+    z-index: 13007;
     font-weight: 800;
     box-sizing: content-box;
 }
@@ -80,10 +80,17 @@
     outline-offset: 0;
 }
 
+.edit-vs-json canvas.evj-calc-canvas {
+  z-index: 13005;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+}
+
 .edit-vs-json pre.evj-view {
     background-color: #303030;
     color: #d0d0d0;
-    z-index: 6;
+    z-index: 13006;
     position: relative;
     overflow: auto;
     top: 2px;

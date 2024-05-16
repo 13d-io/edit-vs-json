@@ -68,7 +68,10 @@ the height of the JSON editor control
 
 the initial JSON string value for the Editor
 
-### onChange: function(value: string, isValid: boolean)
+### onChange: optional function
+```typescript
+onChange: (value: string, isValid: boolean) => void
+```
 
 the JSON editor change event handler, which receives 2 arguments: 
 - the current JSON string value 
@@ -80,7 +83,15 @@ the debounce interval in ms for the change event
 - smaller values result in the change event being triggered more frequently
 - larger values cause the change event to be triggered only when editing pauses
 
-### onKeyEntry: function(key: string, position: { x: number, y: number }, callback: (key?: string | null) => void)
+### onKeyEntry: optional function
+```typescript
+onKeyEntry: (
+  currentKey: string, 
+  position: { x: number, y: number }, 
+  callback: (newKey?: string | null)
+) => void
+```
+
 
 the key entry event handler 
 

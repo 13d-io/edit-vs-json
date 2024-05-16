@@ -1,6 +1,4 @@
 import { useState, useRef } from 'react';
-// eslint-disable-next-line
-import styles from './app.module.css';
 
 import { Editor } from 'edit-vs-json';
 import { Toggle } from './Toggle';
@@ -61,30 +59,23 @@ export function App() {
         <button className="github" onClick={handleGithub}>GitHub</button>
       </div>
       <div className="bar">
-        <div style={{ height: '64px', width: '1400px', padding: '2px' }}>
+        <div className="button-bar">
           <Toggle active={validationActive} onClick={handleValidationToggle}>Toggle Validation</Toggle>
           <Toggle active={keyEditActive} onClick={handleKeyEditToggle}>Toggle Key Editing</Toggle>
           <Toggle active={isLocked} onClick={handleLockToggle}>Toggle Editor Lock</Toggle>
         </div>
       </div>
       <div className="bar">
-        <div ref={el => overlayEl.current = el} style={{
-          position: 'absolute',
-          display: cursorPos.x ? 'inline' : 'none',
-          left: `calc(((100vw - 1400px) / 2) + ${cursorPos.x}px)`,
-          top: `${cursorPos.y > 300 ? cursorPos.y+120 : cursorPos.y+186}px`,
-          opacity: 0.5,
-          color: 'red',
-          backgroundColor: 'lightgray',
-          border: '1px solid gray',
-          fontWeight: 'bold',
-          padding: '4px',
-          zIndex: 9999,
-          height: '24px',
-        }}>{currentKey}</div>
-        <div>
+        <div className="floating-key-container">
+          <div className="floating-key" ref={el => overlayEl.current = el} style={{
+            display: cursorPos.x ? 'inline' : 'none',
+            left: `${cursorPos.x + 12}px`,
+            top: `${cursorPos.y > 300 ? cursorPos.y - 40 : cursorPos.y + 16}px`,
+          }}>{currentKey}</div>
+        </div>
+        <div className="editor-container">
           <Editor
-            width="1400px"
+            width="100%"
             height="400px"
             onChange={validationActive ? handleValidate : undefined}
             changeDebounceInterval={300}

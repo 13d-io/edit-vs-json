@@ -35,7 +35,7 @@ const createKeyEntryHandler = debouncedKeyEntryFactory();
  * @param {string} [initValue=""] the initial JSON string value to populate the editor
  * @param {function(value:string, isValid:boolean)} [onChange] the JSON editor change event handler
  * @param {number} [changeDebounceInterval] the debounce interval in ms for the onChange event
- * @param {function(key:string, callback:function)} [onKeyEntry] the object key entry event handler
+ * @param {function(key:string, position: { x: number, y: number }, callback:function)} [onKeyEntry] the object key entry event handler
  * @param {number} [keyEntryDebounceInterval] the debounce interval in ms for the onKeyEntry event
  * @param {boolean} [locked=false] locks the editor when set to true
  * @constructor
@@ -212,7 +212,7 @@ export const Editor: FC<IProps> = ({
           autoCapitalize="off"
           spellCheck="false"
         />
-        <canvas className="evj-calc-canvas" style={{ visibility: 'hidden' }} />
+        <canvas className="evj-calc-canvas" />
       </div>
     </div>
   );
