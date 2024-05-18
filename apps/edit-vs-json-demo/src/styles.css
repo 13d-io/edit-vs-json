@@ -210,3 +210,36 @@ div.editor-container {
   }
 }
 
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 22px;
+  }
+
+  div.editor-container {
+    width: 300px;
+  }
+
+  div.bar {
+    width: 300px;
+  }
+
+  div.button-bar {
+    height: 150px;
+    width: 300px;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  div.floating-key-container {
+    width: 300px;
+  }
+
+  .toggle {
+    height: auto;
+    width: 200px;
+    margin: 0.25rem;
+  }
+}
