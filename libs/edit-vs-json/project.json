@@ -67,6 +67,13 @@
         "docsMode": true,
         "noOpen": false
       }
+    },
+    "test": {
+      "options": {
+        "coverageReporters": [
+          "json-summary"
+        ]
+      }
     }
   }
 }

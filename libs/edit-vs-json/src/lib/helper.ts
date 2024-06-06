@@ -92,6 +92,8 @@ export const tryFormatJson = (json: string, indent: number, stripTrailingCommas:
 
 let cachedFont = '400 14px monospace';
 
+export const _debug_getCachedFont = () => cachedFont;
+
 export const setCanvasFont = (inputEl: HTMLTextAreaElement) => {
   let computedStyles: StylePropertyMapReadOnly | null = null;
   let fontFamilyValue: string;
@@ -241,6 +243,7 @@ const testNonstringItem = /^\s*((([0-9]+[.])?[0-9]+)|true|false|null)([,]?)$/;
 const testStringItem = /^\s*"([^"]*)"([,]?)$/;
 const testObject = /^\s*(["]?)([a-z0-9_$-]+)(["]?)\s*(:\s*\{)\s*(})\s*$/;
 const testArray = /^\s*(["]?)([a-z0-9_$-]+)(["]?)\s*(:\s*\[)\s*(])\s*$/;
+const testColon = /^\s*(["]?)([a-z0-9_$-]+)(["]?)\s*([{[])\s*([\]}]?)\s*$/;
 
 export const calculateBestPotentialValue = (split: TSplitInput): ICalcResults | null => {
   return tryJsonInsertAtCursor(split, `${POTENTIAL_PAIR}}`) ||
@@ -279,6 +282,10 @@ export const calculateBestPotentialValue = (split: TSplitInput): ICalcResults | 
     tryJsonReplacementAtCursor(split, testNakedItem, '"$1"$2', 2) ||
     tryJsonReplacementAtCursor(split, testNakedKey, '$1"$2"$3', 2) ||
     tryJsonReplacementAtCursor(split, testNakedValue, `$1"$6",${POTENTIAL_PAIR}`) ||
+    tryJsonReplacementAtCursor(split, testColon, `"$2": $4${POTENTIAL_PAIR}$5`) ||
+    tryJsonReplacementAtCursor(split, testColon, `"$2": $4${POTENTIAL_ITEM}$5`) ||
+    tryJsonReplacementAtCursor(split, testColon, `"$2": $4${POTENTIAL_PAIR}}`) ||
+    tryJsonReplacementAtCursor(split, testColon, `"$2": $4${POTENTIAL_ITEM}]`) ||
     tryJsonInsertAtCursor(split, '');
 };
 

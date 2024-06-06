@@ -11,6 +11,7 @@
     "demo:deploy": "gh-pages -d dist/apps/edit-vs-json-demo",
     "storybook": "nx run edit-vs-json:storybook",
     "test": "nx test edit-vs-json",
+    "coverage": "nx test edit-vs-json --coverage",
     "publish": "./scripts/publish.sh"
   },
   "private": true,
