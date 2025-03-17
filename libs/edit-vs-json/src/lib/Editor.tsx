@@ -62,6 +62,7 @@ export const Editor: FC<IProps> = ({
     const scrollSync = () => {
       if (editorEl.current && viewerEl.current) {
         viewerEl.current.scrollTop = editorEl.current.scrollTop;
+        viewerEl.current.scrollLeft = editorEl.current.scrollLeft;
       }
     };
     if (editorEl.current) {
@@ -211,6 +212,7 @@ export const Editor: FC<IProps> = ({
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
+          wrap="off"
         />
         <canvas className="evj-calc-canvas" />
       </div>

@@ -61,6 +61,7 @@
     font-size: 14px;
     line-height: 19.6px;
     font-weight: 400;
+    overflow-x: scroll;
 }
 
 .edit-vs-json textarea.evj-edit {
@@ -94,7 +95,7 @@
     color: #d0d0d0;
     z-index: 13006;
     position: relative;
-    overflow: auto;
+    overflow-y: auto;
     top: 2px;
     left: 1px;
 }
