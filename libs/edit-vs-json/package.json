@@ -1,6 +1,6 @@
 {
   "name": "edit-vs-json",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "author": "Richard Vance <richiemillennium@gmail.com> (https://github.com/RichieMillennium)",
   "license": "MIT",
   "description": "A React JSON editor with syntax highlighting and auto-formatting",
